@@ -1,6 +1,10 @@
 class: Workflow
 cwlVersion: v1.2
 
+#
+# Called by aws-s3-bulk-cp.cwl, you want to start there, don't run this directly.
+#
+
 $namespaces:
   arv: "http://arvados.org/cwl#"
   cwltool: "http://commonwl.org/cwltool#"

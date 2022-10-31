@@ -1,6 +1,12 @@
 class: Workflow
 cwlVersion: v1.2
 
+#
+# Workflow to bulk transfer a list of S3 objects
+# This is the main workflow.
+#
+# See README for details.
+
 $namespaces:
   arv: "http://arvados.org/cwl#"
   cwltool: "http://commonwl.org/cwltool#"
@@ -27,7 +33,7 @@ steps:
     in:
       urls: s3urls
       count: parallel_downloads
-    run: batch.cwl
+    run: tools/batch.cwl
     out: [batches]
 
   scatter:
@@ -37,13 +43,13 @@ steps:
       aws_secret_access_key: aws_secret_access_key
       endpoint: endpoint
     scatter: s3url
-    run: aws-s3-scatter-cp.cwl
+    run: tools/aws-s3-scatter-cp.cwl
     out: [files]
 
   merge:
     in:
       infiles: scatter/files
-    run: merge.cwl
+    run: tools/merge.cwl
     out: [files]
 
 outputs:
