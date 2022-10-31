@@ -20,9 +20,9 @@ requirements:
     dockerImageId: arvados/awscli:0.3
   NetworkAccess:
     networkAccess: true
-  arv:RunInSingleContainer: {}
 
 hints:
+  arv:RunInSingleContainer: {}
   cwltool:Secrets:
     secrets: [aws_access_key_id, aws_secret_access_key]
 
