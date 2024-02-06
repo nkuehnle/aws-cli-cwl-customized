@@ -14,10 +14,12 @@ requirements:
   SubworkflowFeatureRequirement: {}
   DockerRequirement:
     dockerFile: |
-      FROM debian:11-slim
-      RUN apt-get update && apt-get install -qy --no-install-recommends awscli python3-pip python3-setuptools build-essential nodejs
-      RUN pip3 install wheel && pip3 install cwltool
-    dockerImageId: arvados/awscli:0.3
+      FROM debian:12-slim
+      RUN apt-get update && apt-get install -qy --no-install-recommends awscli python3-pip python3-setuptools build-essential nodejs python3.11-venv ca-certificates
+      RUN python3 -mvenv /opt
+      RUN /opt/bin/pip3 install wheel && /opt/bin/pip3 install cwltool
+      RUN ln -s /opt/bin/cwltool /usr/bin/cwltool
+    dockerImageId: arvados/awscli:0.4
   NetworkAccess:
     networkAccess: true
 

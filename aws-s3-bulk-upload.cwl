@@ -20,7 +20,8 @@ hints:
     secrets: [aws_access_key_id, aws_secret_access_key]
 
 inputs:
-  s3urls: string[]
+  files: File[]
+  s3target: string
   aws_access_key_id: string
   aws_secret_access_key: string
   parallel_transfers:
@@ -31,28 +32,20 @@ inputs:
 steps:
   split:
     in:
-      urls: s3urls
+      urls: files
       count: parallel_transfers
     run: tools/batch.cwl
     out: [batches]
 
   scatter:
     in:
-      s3url: split/batches
+      files: split/batches
+      s3target: s3target
       aws_access_key_id: aws_access_key_id
       aws_secret_access_key: aws_secret_access_key
       endpoint: endpoint
-    scatter: s3url
-    run: tools/aws-s3-scatter-download.cwl
-    out: [files]
+    scatter: files
+    run: tools/aws-s3-scatter-upload.cwl
+    out: []
 
-  merge:
-    in:
-      infiles: scatter/files
-    run: tools/merge.cwl
-    out: [files]
-
-outputs:
-  files:
-    type: File[]
-    outputSource: [merge/files]
+outputs: []

@@ -29,7 +29,9 @@ hints:
   arv:RuntimeConstraints:
     outputDirType: keep_output_dir
 
-arguments: ["aws", "s3", "cp",
+arguments: ["aws",
+  "--profile", "default",
+  "s3", "cp",
   {valueFrom: $(inputs.endpoint), prefix: "--endpoint"},
   $(inputs.s3url), $(inputs.s3url.split('/').pop())]
 

@@ -7,16 +7,15 @@ $namespaces:
 
 inputs:
   file: File
-  s3url: string
+  s3target: string
   aws_access_key_id: string
   aws_secret_access_key: string
+  endpoint: string?
 
 requirements:
   InlineJavascriptRequirement: {}
   NetworkAccess:
     networkAccess: true
-  DockerRequirement:
-    dockerPull: amazon/aws-cli
   InitialWorkDirRequirement:
     listing:
       - entryname: .aws/credentials
@@ -28,7 +27,11 @@ requirements:
 hints:
   cwltool:Secrets:
     secrets: [aws_access_key_id, aws_secret_access_key]
+  arv:RuntimeConstraints:
+    outputDirType: keep_output_dir
 
-arguments: ["s3", "cp", $(inputs.file), $(inputs.s3url)/$(inputs.file.basename)]
+arguments: ["aws", "s3", "cp",
+  {valueFrom: $(inputs.endpoint), prefix: "--endpoint"},
+  $(inputs.file), $(inputs.s3target)/$(inputs.file.basename)]
 
 outputs: []

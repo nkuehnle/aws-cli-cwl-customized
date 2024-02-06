@@ -3,15 +3,17 @@ class: ExpressionTool
 requirements:
   InlineJavascriptRequirement: {}
 inputs:
-  urls: string[]
+  urls:
+      - type: array
+        items: [string, File]
   count: int
 outputs:
   batches:
     type:
-      type: array
-      items:
-        type: array
-        items: string
+      - type: array
+        items:
+          type: array
+          items: [string, File]
 
 expression: |
   ${
