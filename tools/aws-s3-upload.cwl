@@ -32,6 +32,6 @@ hints:
 
 arguments: ["aws", "s3", "cp",
   {valueFrom: $(inputs.endpoint), prefix: "--endpoint"},
-  $(inputs.file), $(inputs.s3target)/$(inputs.file.basename)]
+  $(inputs.file), $(inputs.s3target)$(inputs.file.basename)]
 
 outputs: []
