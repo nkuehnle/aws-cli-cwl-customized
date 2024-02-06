@@ -32,7 +32,7 @@ inputs:
   s3url: string[]
   aws_access_key_id: string
   aws_secret_access_key: string
-  endpoint: string
+  endpoint: string?
 
 steps:
   sc:
