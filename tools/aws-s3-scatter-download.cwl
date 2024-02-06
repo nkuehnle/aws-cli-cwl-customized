@@ -40,7 +40,7 @@ steps:
       aws_secret_access_key: aws_secret_access_key
       endpoint: endpoint
     scatter: s3url
-    run: aws-s3-cp.cwl
+    run: aws-s3-download.cwl
     out: [file]
 
 outputs:

@@ -43,7 +43,7 @@ steps:
       aws_secret_access_key: aws_secret_access_key
       endpoint: endpoint
     scatter: s3url
-    run: tools/aws-s3-scatter-cp.cwl
+    run: tools/aws-s3-scatter-download.cwl
     out: [files]
 
   merge:
