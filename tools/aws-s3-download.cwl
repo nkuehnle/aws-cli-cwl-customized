@@ -33,6 +33,8 @@ requirements:
       - entryname: download.sh
         entry: |
           ${
+          // cwltool expression scanner has trouble with unbalanced quotes, the workaround
+          // is adding the comment on the next line
           var rx = /['\\]/g; // '
           var quote = function(s) { return "'"+s.replace(rx, "")+"'"; }
           var endpoint = "";
