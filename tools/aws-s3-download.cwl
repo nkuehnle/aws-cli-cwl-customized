@@ -6,15 +6,20 @@ $namespaces:
   cwltool: "http://commonwl.org/cwltool#"
 
 inputs:
-  s3url: string
+  s3urls: string[]
   aws_access_key_id: string
   aws_secret_access_key: string
   endpoint: string?
 
 requirements:
   InlineJavascriptRequirement: {}
+  DockerRequirement:
+    dockerFile: {$include: awscli.cwltool.dockerfile}
+    dockerImageId: arvados/awscli:0.5
   NetworkAccess:
     networkAccess: true
+  ResourceRequirement:
+    ramMin: 3000
   InitialWorkDirRequirement:
     listing:
       - entryname: .aws/credentials
@@ -22,6 +27,19 @@ requirements:
           [default]
           aws_access_key_id=$(inputs.aws_access_key_id)
           aws_secret_access_key=$(inputs.aws_secret_access_key)
+      - entryname: download.sh
+        entry: |
+          ${
+          var endpoint = "";
+          if (inputs.endpoint) {
+            endpoint = "--endpoint "+inputs.endpoint+" ";
+          }
+          var commands = inputs.s3urls.map(function(url) {
+            return "aws s3 cp "+endpoint+" --no-progress '"+url+"' '"+url.split('/').pop()+"'";
+          });
+          commands.push("");
+          return commands.join("\n");
+          }
 
 hints:
   cwltool:Secrets:
@@ -29,14 +47,10 @@ hints:
   arv:RuntimeConstraints:
     outputDirType: keep_output_dir
 
-arguments: ["aws",
-  "--profile", "default",
-  "s3", "cp",
-  {valueFrom: $(inputs.endpoint), prefix: "--endpoint"},
-  $(inputs.s3url), $(inputs.s3url.split('/').pop())]
+arguments: ["/bin/sh", "download.sh"]
 
 outputs:
-  file:
-    type: File
+  files:
+    type: File[]
     outputBinding:
-      glob: $(inputs.s3url.split('/').pop())
+      glob: $(inputs.s3urls.map(function(url) { return url.split('/').pop(); }))

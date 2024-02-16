@@ -59,7 +59,7 @@ steps:
     run: tools/batch.cwl
     out: [batches]
 
-  scatter:
+  upload-batch:
     in:
       files: split/batches
       s3target: s3target
@@ -67,7 +67,7 @@ steps:
       aws_secret_access_key: aws_secret_access_key
       endpoint: endpoint
     scatter: files
-    run: tools/aws-s3-scatter-upload.cwl
+    run: tools/aws-s3-upload.cwl
     out: []
 
 outputs: []

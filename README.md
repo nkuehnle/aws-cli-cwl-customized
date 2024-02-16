@@ -19,12 +19,12 @@ Here is what the input.yml file should look like:
 ```
 # List of s3:// URLs of objects to download
 s3urls:
-  - s3://bucket/object1
-  - s3://bucket/object2
-  - s3://bucket/object3
+  - s3://source-bucket/object1
+  - s3://source-bucket/object2
+  - s3://source-bucket/object3
 
 # Number of downloader processes to use
-parallel_downloads: 3
+parallel_transfers: 3
 
 # AWS credentials, these are marked as secret inputs
 # so they will not be exposed by Arvados
@@ -37,9 +37,9 @@ aws_secret_access_key: <secret key>
 This is a CWL workflow (with Arvados specific enhancements) to
 perform bulk upload of a list of files to a S3 bucket.
 
-It spreads the load across the desired number of parallel downloads by
+It spreads the load across the desired number of parallel uploads by
 splitting up the list and giving each compute node a list of files to
-download.
+upload.
 
 Note: it divides the list ahead of time by round-robin assigning each
 entry in `files` to a batch, so if there is a big disparity in object
@@ -60,7 +60,7 @@ files:
 # The target s3:// URL to upload to
 # This is a string prefix to which the file name is appended
 # so you usually want a trailing slash
-s3target: s3://tordo-4zz18-6dsoy3erabtuwds/
+s3target: s3://destination-bucket/
 
 # Number of uploader processes to use
 parallel_transfers: 3

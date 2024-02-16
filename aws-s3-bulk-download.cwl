@@ -54,19 +54,19 @@ steps:
     run: tools/batch.cwl
     out: [batches]
 
-  scatter:
+  download-batch:
     in:
-      s3url: split/batches
+      s3urls: split/batches
       aws_access_key_id: aws_access_key_id
       aws_secret_access_key: aws_secret_access_key
       endpoint: endpoint
-    scatter: s3url
-    run: tools/aws-s3-scatter-download.cwl
+    scatter: s3urls
+    run: tools/aws-s3-download.cwl
     out: [files]
 
   merge:
     in:
-      infiles: scatter/files
+      infiles: download-batch/files
     run: tools/merge.cwl
     out: [files]
 
