@@ -11,6 +11,9 @@ inputs:
   aws_access_key_id: string
   aws_secret_access_key: string
   endpoint: string?
+  ramMin:
+    type: int
+    default: 1000
 
 requirements:
   InlineJavascriptRequirement: {}
@@ -20,7 +23,7 @@ requirements:
   NetworkAccess:
     networkAccess: true
   ResourceRequirement:
-    ramMin: 3000
+    ramMin: $(inputs.ramMin)
   WorkReuse:
     enableReuse: false
   InitialWorkDirRequirement:
@@ -33,12 +36,13 @@ requirements:
       - entryname: upload.sh
         entry: |
           ${
+          var quote = function(s) { return "'"+s.replaceAll("'", "")+"'"; }
           var endpoint = "";
           if (inputs.endpoint) {
-            endpoint = "--endpoint "+inputs.endpoint+" ";
+            endpoint = "--endpoint "+quote(inputs.endpoint);
           }
           var commands = inputs.files.map(function(file) {
-            return "aws s3 cp "+endpoint+" --no-progress '"+file.path+"' '"+inputs.s3target+file.basename+"'";
+            return "aws s3 cp "+endpoint+" --no-progress "+quote(file.path)+" "+quote(inputs.s3target+file.basename);
           });
           commands.unshift("set -e");
           commands.push("");

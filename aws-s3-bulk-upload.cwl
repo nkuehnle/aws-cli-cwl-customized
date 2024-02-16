@@ -50,6 +50,9 @@ inputs:
   endpoint:
     type: string?
     label: "URL to use if contacting a custom S3 API endpoint"
+  ramMin:
+    type: int?
+    label: "Custom RAM request for download"
 
 steps:
   split:
@@ -66,6 +69,7 @@ steps:
       aws_access_key_id: aws_access_key_id
       aws_secret_access_key: aws_secret_access_key
       endpoint: endpoint
+      ramMin: ramMin
     scatter: files
     run: tools/aws-s3-upload.cwl
     out: []

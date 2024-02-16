@@ -10,6 +10,9 @@ inputs:
   aws_access_key_id: string
   aws_secret_access_key: string
   endpoint: string?
+  ramMin:
+    type: int
+    default: 1000
 
 requirements:
   InlineJavascriptRequirement: {}
@@ -19,7 +22,7 @@ requirements:
   NetworkAccess:
     networkAccess: true
   ResourceRequirement:
-    ramMin: 3000
+    ramMin: $(inputs.ramMin)
   InitialWorkDirRequirement:
     listing:
       - entryname: .aws/credentials
@@ -30,12 +33,13 @@ requirements:
       - entryname: download.sh
         entry: |
           ${
+          var quote = function(s) { return "'"+s.replaceAll("'", "")+"'"; }
           var endpoint = "";
           if (inputs.endpoint) {
-            endpoint = "--endpoint "+inputs.endpoint+" ";
+            endpoint = "--endpoint "+quote(inputs.endpoint);
           }
           var commands = inputs.s3urls.map(function(url) {
-            return "aws s3 cp "+endpoint+" --no-progress '"+url+"' '"+url.split('/').pop()+"'";
+            return "aws s3 cp "+endpoint+" --no-progress "+quote(url)+" "+quote(url.split('/').pop());
           });
           commands.unshift("set -e");
           commands.push("");
