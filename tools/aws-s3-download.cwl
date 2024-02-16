@@ -33,7 +33,7 @@ requirements:
       - entryname: download.sh
         entry: |
           ${
-          var quote = function(s) { return "'"+s.replaceAll("'", "")+"'"; }
+          var quote = function(s) { return "'"+s.replaceAll("'", "").replaceAll("\\", "")+"'"; }
           var endpoint = "";
           if (inputs.endpoint) {
             endpoint = "--endpoint "+quote(inputs.endpoint);
