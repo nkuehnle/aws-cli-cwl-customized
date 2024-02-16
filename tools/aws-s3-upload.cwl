@@ -21,6 +21,8 @@ requirements:
     networkAccess: true
   ResourceRequirement:
     ramMin: 3000
+  WorkReuse:
+    enableReuse: false
   InitialWorkDirRequirement:
     listing:
       - entryname: .aws/credentials
