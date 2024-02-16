@@ -36,7 +36,8 @@ requirements:
       - entryname: upload.sh
         entry: |
           ${
-          var quote = function(s) { return "'"+s.replaceAll("'", "").replaceAll("\\", "")+"'"; }
+          var rx = /['\\]/g; // '
+          var quote = function(s) { return "'"+s.replace(rx, "")+"'"; }
           var endpoint = "";
           if (inputs.endpoint) {
             endpoint = "--endpoint "+quote(inputs.endpoint);
