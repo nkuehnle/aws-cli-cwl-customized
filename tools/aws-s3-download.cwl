@@ -37,6 +37,7 @@ requirements:
           var commands = inputs.s3urls.map(function(url) {
             return "aws s3 cp "+endpoint+" --no-progress '"+url+"' '"+url.split('/').pop()+"'";
           });
+          commands.unshift("set -e");
           commands.push("");
           return commands.join("\n");
           }
