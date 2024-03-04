@@ -53,6 +53,9 @@ inputs:
   ramMin:
     type: int?
     label: "Custom RAM request for download"
+  preserve_paths:
+    label: "Whether to recreate folders (true) in S3 target or flatten file structures (false)."
+    type: boolean
 
 steps:
   split:
@@ -70,6 +73,7 @@ steps:
       aws_secret_access_key: aws_secret_access_key
       endpoint: endpoint
       ramMin: ramMin
+      preserve_paths: preserve_paths
     scatter: files
     run: tools/aws-s3-upload.cwl
     out: []
