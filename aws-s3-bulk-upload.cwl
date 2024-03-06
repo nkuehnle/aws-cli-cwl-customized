@@ -54,8 +54,8 @@ inputs:
     type: int?
     label: "Custom RAM request for download"
   preserve_paths:
-    label: "Whether to recreate folders (true) in S3 target or flatten file structures (false)."
-    type: boolean
+    label: Whether to recreate folders in S3 target or flatten file structures (excludes keep:<uuid> prefix>.
+    type: boolean?
 
 steps:
   split:
